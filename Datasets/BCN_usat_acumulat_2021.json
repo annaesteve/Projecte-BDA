@@ -1,0 +1,412 @@
+{
+    "Baró de Viver": {
+        "Habitatges_totals": 52,
+        "Superficie_mitjana": 70.08,
+        "Preu_m2_mitja": 0.0
+    },
+    "Can Baró": {
+        "Habitatges_totals": 212,
+        "Superficie_mitjana": 71.98,
+        "Preu_m2_mitja": 3201.27
+    },
+    "Can Peguera": {
+        "Habitatges_totals": 19,
+        "Superficie_mitjana": 74.8,
+        "Preu_m2_mitja": 2765.84
+    },
+    "Canyelles": {
+        "Habitatges_totals": 103,
+        "Superficie_mitjana": 68.6,
+        "Preu_m2_mitja": 2586.0
+    },
+    "Ciutat Meridiana": {
+        "Habitatges_totals": 265,
+        "Superficie_mitjana": 57.22,
+        "Preu_m2_mitja": 1167.5
+    },
+    "Ciutat Vella": {
+        "Habitatges_totals": 2429,
+        "Superficie_mitjana": 62.28,
+        "Preu_m2_mitja": 3647.87
+    },
+    "Diagonal Mar i el Front Marítim del Poblenou": {
+        "Habitatges_totals": 261,
+        "Superficie_mitjana": 95.81,
+        "Preu_m2_mitja": 4418.28
+    },
+    "Eixample": {
+        "Habitatges_totals": 4824,
+        "Superficie_mitjana": 88.39,
+        "Preu_m2_mitja": 4578.51
+    },
+    "Gràcia": {
+        "Habitatges_totals": 2459,
+        "Superficie_mitjana": 79.46,
+        "Preu_m2_mitja": 4244.84
+    },
+    "Horta": {
+        "Habitatges_totals": 422,
+        "Superficie_mitjana": 67.9,
+        "Preu_m2_mitja": 3178.7
+    },
+    "Horta-Guinardó": {
+        "Habitatges_totals": 3048,
+        "Superficie_mitjana": 70.74,
+        "Preu_m2_mitja": 3018.74
+    },
+    "Hostafrancs": {
+        "Habitatges_totals": 182,
+        "Superficie_mitjana": 64.6,
+        "Preu_m2_mitja": 4099.59
+    },
+    "Les Corts": {
+        "Habitatges_totals": 1434,
+        "Superficie_mitjana": 94.03,
+        "Preu_m2_mitja": 4743.26
+    },
+    "Montbau": {
+        "Habitatges_totals": 101,
+        "Superficie_mitjana": 68.7,
+        "Preu_m2_mitja": 2709.27
+    },
+    "Navas": {
+        "Habitatges_totals": 428,
+        "Superficie_mitjana": 74.67,
+        "Preu_m2_mitja": 3459.81
+    },
+    "Nou Barris": {
+        "Habitatges_totals": 3093,
+        "Superficie_mitjana": 62.6,
+        "Preu_m2_mitja": 2502.68
+    },
+    "Pedralbes": {
+        "Habitatges_totals": 231,
+        "Superficie_mitjana": 144.32,
+        "Preu_m2_mitja": 5914.1
+    },
+    "Porta": {
+        "Habitatges_totals": 368,
+        "Superficie_mitjana": 62.4,
+        "Preu_m2_mitja": 2753.75
+    },
+    "Provençals del Poblenou": {
+        "Habitatges_totals": 266,
+        "Superficie_mitjana": 73.05,
+        "Preu_m2_mitja": 3278.0
+    },
+    "Sant Andreu": {
+        "Habitatges_totals": 4343,
+        "Superficie_mitjana": 72.55,
+        "Preu_m2_mitja": 3433.3
+    },
+    "Sant Antoni": {
+        "Habitatges_totals": 649,
+        "Superficie_mitjana": 79.72,
+        "Preu_m2_mitja": 4392.09
+    },
+    "Sant Genís dels Agudells": {
+        "Habitatges_totals": 77,
+        "Superficie_mitjana": 95.72,
+        "Preu_m2_mitja": 2369.44
+    },
+    "Sant Gervasi - Galvany": {
+        "Habitatges_totals": 787,
+        "Superficie_mitjana": 136.32,
+        "Preu_m2_mitja": 7032.26
+    },
+    "Sant Gervasi - la Bonanova": {
+        "Habitatges_totals": 339,
+        "Superficie_mitjana": 126.13,
+        "Preu_m2_mitja": 6715.47
+    },
+    "Sant Martí": {
+        "Habitatges_totals": 4420,
+        "Superficie_mitjana": 72.63,
+        "Preu_m2_mitja": 3550.43
+    },
+    "Sant Martí de Provençals": {
+        "Habitatges_totals": 472,
+        "Superficie_mitjana": 73.89,
+        "Preu_m2_mitja": 2751.12
+    },
+    "Sant Pere, Santa Caterina i la Ribera": {
+        "Habitatges_totals": 593,
+        "Superficie_mitjana": 67.79,
+        "Preu_m2_mitja": 3872.23
+    },
+    "Sants": {
+        "Habitatges_totals": 722,
+        "Superficie_mitjana": 67.99,
+        "Preu_m2_mitja": 3706.87
+    },
+    "Sants - Badal": {
+        "Habitatges_totals": 412,
+        "Superficie_mitjana": 62.34,
+        "Preu_m2_mitja": 3522.63
+    },
+    "Sants-Montjuïc": {
+        "Habitatges_totals": 3306,
+        "Superficie_mitjana": 66.3,
+        "Preu_m2_mitja": 3760.83
+    },
+    "Sarrià": {
+        "Habitatges_totals": 460,
+        "Superficie_mitjana": 109.69,
+        "Preu_m2_mitja": 5630.26
+    },
+    "Sarrià-Sant Gervasi": {
+        "Habitatges_totals": 2535,
+        "Superficie_mitjana": 122.08,
+        "Preu_m2_mitja": 5970.23
+    },
+    "Torre Baró": {
+        "Habitatges_totals": 31,
+        "Superficie_mitjana": 90.65,
+        "Preu_m2_mitja": 2414.34
+    },
+    "Vallbona": {
+        "Habitatges_totals": 10,
+        "Superficie_mitjana": 34.0,
+        "Preu_m2_mitja": 0.0
+    },
+    "Vallcarca i els Penitents": {
+        "Habitatges_totals": 294,
+        "Superficie_mitjana": 86.43,
+        "Preu_m2_mitja": 4035.72
+    },
+    "Vallvidrera, el Tibidabo i les Planes": {
+        "Habitatges_totals": 85,
+        "Superficie_mitjana": 140.81,
+        "Preu_m2_mitja": 3466.32
+    },
+    "Verdun": {
+        "Habitatges_totals": 277,
+        "Superficie_mitjana": 60.31,
+        "Preu_m2_mitja": 2117.92
+    },
+    "Vilapicina i la Torre Llobeta": {
+        "Habitatges_totals": 432,
+        "Superficie_mitjana": 69.61,
+        "Preu_m2_mitja": 3042.21
+    },
+    "el Baix Guinardó": {
+        "Habitatges_totals": 557,
+        "Superficie_mitjana": 74.66,
+        "Preu_m2_mitja": 3078.54
+    },
+    "el Barri Gòtic": {
+        "Habitatges_totals": 394,
+        "Superficie_mitjana": 84.93,
+        "Preu_m2_mitja": 4057.55
+    },
+    "el Besòs i el Maresme": {
+        "Habitatges_totals": 450,
+        "Superficie_mitjana": 61.02,
+        "Preu_m2_mitja": 2381.2
+    },
+    "el Bon Pastor": {
+        "Habitatges_totals": 298,
+        "Superficie_mitjana": 68.3,
+        "Preu_m2_mitja": 2147.68
+    },
+    "el Camp d'en Grassot i Gràcia Nova": {
+        "Habitatges_totals": 693,
+        "Superficie_mitjana": 76.52,
+        "Preu_m2_mitja": 4419.01
+    },
+    "el Camp de l'Arpa del Clot": {
+        "Habitatges_totals": 777,
+        "Superficie_mitjana": 68.59,
+        "Preu_m2_mitja": 3349.87
+    },
+    "el Carmel": {
+        "Habitatges_totals": 576,
+        "Superficie_mitjana": 60.47,
+        "Preu_m2_mitja": 2457.01
+    },
+    "el Clot": {
+        "Habitatges_totals": 450,
+        "Superficie_mitjana": 69.91,
+        "Preu_m2_mitja": 3693.99
+    },
+    "el Coll": {
+        "Habitatges_totals": 120,
+        "Superficie_mitjana": 69.47,
+        "Preu_m2_mitja": 3055.45
+    },
+    "el Congrés i els Indians": {
+        "Habitatges_totals": 364,
+        "Superficie_mitjana": 74.3,
+        "Preu_m2_mitja": 3876.02
+    },
+    "el Fort Pienc": {
+        "Habitatges_totals": 535,
+        "Superficie_mitjana": 82.85,
+        "Preu_m2_mitja": 3939.12
+    },
+    "el Guinardó": {
+        "Habitatges_totals": 681,
+        "Superficie_mitjana": 70.72,
+        "Preu_m2_mitja": 3459.26
+    },
+    "el Parc i la Llacuna del Poblenou": {
+        "Habitatges_totals": 232,
+        "Superficie_mitjana": 73.86,
+        "Preu_m2_mitja": 4085.42
+    },
+    "el Poble Sec - Parc Montjuïc": {
+        "Habitatges_totals": 902,
+        "Superficie_mitjana": 60.65,
+        "Preu_m2_mitja": 4654.13
+    },
+    "el Poblenou": {
+        "Habitatges_totals": 743,
+        "Superficie_mitjana": 72.66,
+        "Preu_m2_mitja": 4468.93
+    },
+    "el Putxet i el Farró": {
+        "Habitatges_totals": 621,
+        "Superficie_mitjana": 93.39,
+        "Preu_m2_mitja": 4855.63
+    },
+    "el Raval": {
+        "Habitatges_totals": 1039,
+        "Superficie_mitjana": 59.34,
+        "Preu_m2_mitja": 3047.04
+    },
+    "el Turó de la Peira": {
+        "Habitatges_totals": 332,
+        "Superficie_mitjana": 62.68,
+        "Preu_m2_mitja": 2227.2
+    },
+    "l'Antiga Esquerra de l'Eixample": {
+        "Habitatges_totals": 915,
+        "Superficie_mitjana": 94.27,
+        "Preu_m2_mitja": 4708.76
+    },
+    "la Barceloneta": {
+        "Habitatges_totals": 403,
+        "Superficie_mitjana": 44.27,
+        "Preu_m2_mitja": 4329.75
+    },
+    "la Bordeta": {
+        "Habitatges_totals": 375,
+        "Superficie_mitjana": 69.25,
+        "Preu_m2_mitja": 2860.13
+    },
+    "la Clota": {
+        "Habitatges_totals": 7,
+        "Superficie_mitjana": 0.0,
+        "Preu_m2_mitja": 0.0
+    },
+    "la Dreta de l'Eixample": {
+        "Habitatges_totals": 897,
+        "Superficie_mitjana": 110.66,
+        "Preu_m2_mitja": 5497.47
+    },
+    "la Font d'en Fargues": {
+        "Habitatges_totals": 175,
+        "Superficie_mitjana": 89.24,
+        "Preu_m2_mitja": 3847.33
+    },
+    "la Font de la Guatlla": {
+        "Habitatges_totals": 144,
+        "Superficie_mitjana": 70.88,
+        "Preu_m2_mitja": 3735.71
+    },
+    "la Guineueta": {
+        "Habitatges_totals": 201,
+        "Superficie_mitjana": 76.54,
+        "Preu_m2_mitja": 2457.47
+    },
+    "la Marina de Port": {
+        "Habitatges_totals": 507,
+        "Superficie_mitjana": 71.6,
+        "Preu_m2_mitja": 3291.89
+    },
+    "la Marina del Prat Vermell - Zona Franca": {
+        "Habitatges_totals": 62,
+        "Superficie_mitjana": 74.68,
+        "Preu_m2_mitja": 3089.9
+    },
+    "la Maternitat i Sant Ramon": {
+        "Habitatges_totals": 410,
+        "Superficie_mitjana": 85.18,
+        "Preu_m2_mitja": 4094.3
+    },
+    "la Nova Esquerra de l'Eixample": {
+        "Habitatges_totals": 761,
+        "Superficie_mitjana": 81.82,
+        "Preu_m2_mitja": 4397.73
+    },
+    "la Prosperitat": {
+        "Habitatges_totals": 476,
+        "Superficie_mitjana": 58.31,
+        "Preu_m2_mitja": 2677.48
+    },
+    "la Sagrada Família": {
+        "Habitatges_totals": 1067,
+        "Superficie_mitjana": 76.93,
+        "Preu_m2_mitja": 4123.83
+    },
+    "la Sagrera": {
+        "Habitatges_totals": 512,
+        "Superficie_mitjana": 70.57,
+        "Preu_m2_mitja": 3622.16
+    },
+    "la Salut": {
+        "Habitatges_totals": 299,
+        "Superficie_mitjana": 79.54,
+        "Preu_m2_mitja": 4103.94
+    },
+    "la Teixonera": {
+        "Habitatges_totals": 191,
+        "Superficie_mitjana": 61.45,
+        "Preu_m2_mitja": 2585.16
+    },
+    "la Trinitat Nova": {
+        "Habitatges_totals": 233,
+        "Superficie_mitjana": 59.84,
+        "Preu_m2_mitja": 1974.68
+    },
+    "la Trinitat Vella": {
+        "Habitatges_totals": 259,
+        "Superficie_mitjana": 57.79,
+        "Preu_m2_mitja": 1527.91
+    },
+    "la Vall d'Hebron": {
+        "Habitatges_totals": 49,
+        "Superficie_mitjana": 78.29,
+        "Preu_m2_mitja": 3845.06
+    },
+    "la Verneda i la Pau": {
+        "Habitatges_totals": 614,
+        "Superficie_mitjana": 73.36,
+        "Preu_m2_mitja": 2259.37
+    },
+    "la Vila Olímpica del Poblenou": {
+        "Habitatges_totals": 155,
+        "Superficie_mitjana": 82.93,
+        "Preu_m2_mitja": 4034.44
+    },
+    "la Vila de Gràcia": {
+        "Habitatges_totals": 1053,
+        "Superficie_mitjana": 80.54,
+        "Preu_m2_mitja": 4355.06
+    },
+    "les Corts": {
+        "Habitatges_totals": 793,
+        "Superficie_mitjana": 84.54,
+        "Preu_m2_mitja": 4608.4
+    },
+    "les Roquetes": {
+        "Habitatges_totals": 346,
+        "Superficie_mitjana": 55.04,
+        "Preu_m2_mitja": 2046.21
+    },
+    "les Tres Torres": {
+        "Habitatges_totals": 243,
+        "Superficie_mitjana": 166.92,
+        "Preu_m2_mitja": 5712.74
+    }
+}
