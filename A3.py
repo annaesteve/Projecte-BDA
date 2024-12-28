@@ -21,9 +21,9 @@ if not os.path.exists("Formatted Zone"):
     os.makedirs("Formatted Zone")
 
 def basic_transform_idealista(df):
-    """funció per realitzar transformacions bàsiques sobre df"""
+    """Function to perform basic transformations on df"""
 
-    # treiem files resultat de mal format
+    # remove result rows with bad format
     if "propertyCode" in df.columns:
         df = df.dropDuplicates(["propertyCode"])
 
@@ -127,8 +127,6 @@ def basic_transform_idealista(df):
             ).otherwise(df["neighborhood"])
         )
 
-    # AFEGIR AQUÍ TRANSFORMACIONS QUE ES NECESSITIN
-
     return df
 
 
@@ -139,48 +137,48 @@ cwd = os.getcwd()
 landing_zone_path = os.path.join(cwd, 'Landing Zone')
 formatted_zone_path = f"{cwd}/Formatted Zone"
 
-json_files_with_year = []  # Lista para guardar tuplas (file_path, year)
+json_files_with_year = []  # List to save the tuples (file_path, year)
 
-# Crear la lista con paths y años
+# Save paths and years in the list
 for year in [2020, 2021]:
     for month in range(1, 13):
         for day in range(1, 32):
-            file_path = f"{landing_zone_path}/{year}_{month:02d}_{day:02d}_idealista.json"  # Ajustar ruta según estructura
+            file_path = f"{landing_zone_path}/{year}_{month:02d}_{day:02d}_idealista.json"  # Adjust path according to structure
             if os.path.exists(file_path):
-                json_files_with_year.append((file_path, year))  # Añadir el archivo y el año asociado
+                json_files_with_year.append((file_path, year))  # Add the file and the associated year
 
 
 if json_files_with_year:
-    # Leer todos los esquemas y unificar
+    # Read all schemas and unify
     all_schemas = []
     for file_path, _ in json_files_with_year:
         df = spark.read.json(file_path)
         all_schemas.append(df.schema)
 
-    # Crear un esquema unificado
+    # Create an unified schema
     unified_schema = StructType()
     for schema in all_schemas:
         for field in schema.fields:
             if field.name not in [f.name for f in unified_schema.fields]:
                 unified_schema.add(field)
 
-    # Leer los archivos JSON con el esquema unificado y añadir la columna `year`
+    # Read JSON files with the unified schema and add the column `year`
     dfs = []
     for file_path, year in json_files_with_year:
         df = spark.read.schema(unified_schema).json(file_path).withColumn("year", lit(year))
         dfs.append(df)
 
-    # Combinar todos los DataFrames
+    # Combine all DataFrames
     idealista_combined = dfs[0]
     for df in dfs[1:]:
         idealista_combined = idealista_combined.unionByName(df, allowMissingColumns=True)
 
-    # Transformaciones adicionales
+    # Additional transformations
     idealista_combined = basic_transform_idealista(idealista_combined)
     idealista_combined = idealista_combined.withColumn("_id", idealista_combined["propertyCode"])
     idealista_combined.show(truncate=False)
 
-    # Guardar en la zona formateada
+    # Save to formatted zone
     idealista_combined.write.mode("overwrite").json(f"{formatted_zone_path}/idealista_combined")
 
     print(f"There are {len(idealista_combined.columns)} columns and {idealista_combined.count()} rows.")
@@ -193,7 +191,7 @@ from pyspark.sql.functions import lower, regexp_replace, concat, col
 
 
 def extract_year(filename):
-    match = re.search(r'\d{4}', filename)  # Busca un año en formato YYYY
+    match = re.search(r'\d{4}', filename)  #Search a year in YYYY format
     return int(match.group()) if match else None
 
 housing_combined = None
@@ -206,7 +204,7 @@ for file_name in os.listdir(landing_zone_path):
         with open(json_path, "r") as f:
             data = json.load(f)
         
-        # llegir bé el json
+        # Read the json file correctly
         transformed_data = [{"neighborhood": k, **v} for k, v in data.items()]
         
         df = spark.createDataFrame(transformed_data)
@@ -217,7 +215,7 @@ for file_name in os.listdir(landing_zone_path):
         else:
             housing_combined = housing_combined.union(df)
 
-# write neighborhood in lowercase
+# Write neighborhood in lowercase
 housing_combined = housing_combined.withColumn("neighborhood", lower(col("neighborhood")))
 
 housing_combined = housing_combined.withColumn(
@@ -264,7 +262,7 @@ for file_name in os.listdir(landing_zone_path):
             else:
                 income_combined = income_combined.union(df)
 
-# write neighborhood in lowercase
+# Write Nom_Barri in lowercase
 income_combined = income_combined.withColumn("Nom_Barri", lower(col("Nom_Barri")))
 
 income_combined = income_combined.withColumn('_id', concat(income_combined['_id'], income_combined['Codi_Districte'], income_combined['Any']))
