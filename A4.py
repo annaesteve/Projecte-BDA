@@ -114,7 +114,7 @@ final_dataset = idealista_average.join(housing_df, ['year', 'neighborhood'], 'le
 
 final_dataset.show()
 
-# ESCRIURE-HO EN UNA DELTA TABLE
+# Write the final dataset in a delta table
 cwd = os.getcwd()
 exploitation_zone = os.path.join(cwd, 'Exploitation Zone')
 final_dataset.write.format("delta").save(f"{exploitation_zone}/delta-table")
