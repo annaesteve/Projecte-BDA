@@ -137,15 +137,15 @@ cwd = os.getcwd()
 landing_zone_path = os.path.join(cwd, 'Landing Zone')
 formatted_zone_path = f"{cwd}/Formatted Zone"
 
-json_files_with_year = []  # List to save the tuples (file_path, year)
+json_files_with_year = []  # list to save the tuples (file_path, year)
 
-# Save paths and years in the list
+# save paths and years in the list
 for year in [2020, 2021]:
     for month in range(1, 13):
         for day in range(1, 32):
-            file_path = f"{landing_zone_path}/{year}_{month:02d}_{day:02d}_idealista.json"  # Adjust path according to structure
+            file_path = f"{landing_zone_path}/{year}_{month:02d}_{day:02d}_idealista.json"  # adjust path according to structure
             if os.path.exists(file_path):
-                json_files_with_year.append((file_path, year))  # Add the file and the associated year
+                json_files_with_year.append((file_path, year))  # add the file and the associated year
 
 
 if json_files_with_year:
@@ -155,30 +155,30 @@ if json_files_with_year:
         df = spark.read.json(file_path)
         all_schemas.append(df.schema)
 
-    # Create an unified schema
+    # create an unified schema
     unified_schema = StructType()
     for schema in all_schemas:
         for field in schema.fields:
             if field.name not in [f.name for f in unified_schema.fields]:
                 unified_schema.add(field)
 
-    # Read JSON files with the unified schema and add the column `year`
+    # read JSON files with the unified schema and add the column `year`
     dfs = []
     for file_path, year in json_files_with_year:
         df = spark.read.schema(unified_schema).json(file_path).withColumn("year", lit(year))
         dfs.append(df)
 
-    # Combine all DataFrames
+    # combine all DataFrames
     idealista_combined = dfs[0]
     for df in dfs[1:]:
         idealista_combined = idealista_combined.unionByName(df, allowMissingColumns=True)
 
-    # Additional transformations
+    # additional transformations
     idealista_combined = basic_transform_idealista(idealista_combined)
     idealista_combined = idealista_combined.withColumn("_id", idealista_combined["propertyCode"])
     idealista_combined.show(truncate=False)
 
-    # Save to formatted zone
+    # save to formatted zone
     idealista_combined.write.mode("overwrite").json(f"{formatted_zone_path}/idealista_combined")
 
     print(f"There are {len(idealista_combined.columns)} columns and {idealista_combined.count()} rows.")
@@ -191,7 +191,7 @@ from pyspark.sql.functions import lower, regexp_replace, concat, col
 
 
 def extract_year(filename):
-    match = re.search(r'\d{4}', filename)  #Search a year in YYYY format
+    match = re.search(r'\d{4}', filename)  #search a year in YYYY format
     return int(match.group()) if match else None
 
 housing_combined = None
@@ -215,7 +215,7 @@ for file_name in os.listdir(landing_zone_path):
         else:
             housing_combined = housing_combined.union(df)
 
-# Write neighborhood in lowercase
+# write neighborhood in lowercase
 housing_combined = housing_combined.withColumn("neighborhood", lower(col("neighborhood")))
 
 housing_combined = housing_combined.withColumn(
@@ -242,7 +242,7 @@ housing_combined = housing_combined.withColumn(
 housing_combined = housing_combined.dropDuplicates(["_id"])
 
 
-# Mostrar resultado
+# Show result
 housing_combined.show()
 
 housing_combined.write.mode("overwrite").json(f"{formatted_zone_path}/housing_combined")
@@ -262,7 +262,7 @@ for file_name in os.listdir(landing_zone_path):
             else:
                 income_combined = income_combined.union(df)
 
-# Write Nom_Barri in lowercase
+# write Nom_Barri in lowercase
 income_combined = income_combined.withColumn("Nom_Barri", lower(col("Nom_Barri")))
 
 income_combined = income_combined.withColumn('_id', concat(income_combined['_id'], income_combined['Codi_Districte'], income_combined['Any']))
@@ -272,6 +272,8 @@ income_combined.show()
 print(f"There are {income_combined.count()} rows.")
 
 def upload_to_mongo(df, database_name, collection_name, df_name):
+    """Function to write a dataframe to a MongoDB collection in a given database, overwriting existing data if necessary"""
+    
     df.write.format("mongodb") \
             .option("spark.mongodb.write.database", database_name) \
             .option("spark.mongodb.write.collection", collection_name) \
