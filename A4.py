@@ -3,17 +3,17 @@ import sys
 import pyspark
 import shutil
 import datetime
+from delta import *
+
 from datetime import datetime
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import explode, col, lit, when
-from delta import *
+from pyspark.sql.functions import explode, col, lit, when, udf
+from pyspark.sql.types import ArrayType, FloatType
 
 from pyspark.ml.feature import StringIndexer, OneHotEncoder
 from pyspark.ml import Pipeline
 from pyspark.ml.functions import vector_to_array
-from pyspark.sql.functions import udf
-from pyspark.sql.types import ArrayType, FloatType
 
 def delta_spark_initialization():
     builder = pyspark.sql.SparkSession.builder.appName("MyApp") \
@@ -24,8 +24,9 @@ def delta_spark_initialization():
     return spark
 
 
-# Transformations and cleaning of idealista
+
 def transform_clean_idealista(spark):
+    # Transformations and cleaning of idealista
 
     cwd = os.getcwd()
     exploitation_zone_clean = os.path.join(cwd, 'Exploitation Zone/clean')
@@ -76,8 +77,8 @@ def transform_clean_idealista(spark):
     return idealista_df
 
 
-# Transformations and cleaning of income
 def transform_clean_income(spark):
+    # Transformations and cleaning of income
 
     cwd = os.getcwd()
     exploitation_zone_clean = os.path.join(cwd, 'Exploitation Zone/clean')
@@ -118,8 +119,9 @@ def transform_clean_income(spark):
 
     return income_df
 
-# Transformations and cleaning of housing
+
 def transform_clean_housing(spark):
+    # Transformations and cleaning of housing
 
     cwd = os.getcwd()
     exploitation_zone_clean = os.path.join(cwd, 'Exploitation Zone/clean')
@@ -144,9 +146,10 @@ def transform_clean_housing(spark):
 
     return housing_df
 
-def final_dataset():
 
-    # Initialization of Spark
+def final_dataset():
+    # Prepare final dataset (joins)
+    
     builder = pyspark.sql.SparkSession.builder.appName("MyApp") \
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
@@ -155,16 +158,13 @@ def final_dataset():
     cwd = os.getcwd()
     exploitation_zone_clean = os.path.join(cwd, 'Exploitation Zone/clean')
 
-    # Leer el DataFrame income_df desde Parquet
+    # read all three stored clean datasets, ready for joining
     income_file_path = os.path.join(exploitation_zone_clean, 'income_df.parquet')
-    income_df = spark.read.parquet(income_file_path)
-
-    # Leer el DataFrame housing_df desde Parquet
     housing_file_path = os.path.join(exploitation_zone_clean, 'housing_df.parquet')
-    housing_df = spark.read.parquet(housing_file_path)
-
-    # Leer el DataFrame idealista_df desde Parquet
     idealista_file_path = os.path.join(exploitation_zone_clean, 'idealista_df.parquet')
+
+    income_df = spark.read.parquet(income_file_path)
+    housing_df = spark.read.parquet(housing_file_path)
     idealista_df = spark.read.parquet(idealista_file_path)
 
     # join idealista_df with average_income_df by attribute year, neighborhood
@@ -177,13 +177,13 @@ def final_dataset():
 
     final_dataset.show()
 
-    # Write the final dataset in a delta table
+    # write the final dataset in a delta table
     exploitation_zone = os.path.join(cwd, 'Exploitation Zone')
-
     path = os.path.join(exploitation_zone, 'delta-table')
 
     if not os.path.exists(path):
         os.makedirs(path)
-
+        
     final_dataset.write.format("delta").partitionBy("year", "neighborhood").mode("overwrite").save(path)
     print("Final dataset saved in delta-table.")
+    
