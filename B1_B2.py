@@ -1,27 +1,21 @@
 import os
-from pyspark.sql import SparkSession
-from pyspark.ml.evaluation import RegressionEvaluator
-from pyspark.ml.regression import LinearRegression, RandomForestRegressor
 
+from pyspark.sql import SparkSession, functions as F
 from pyspark.sql.functions import col, mean
 from pyspark.sql.types import DoubleType
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.stat import Correlation
-from pyspark.sql import functions as F
 
-import mlflow
-import mlflow.spark
-
-# TRAINING OF THE REGRESSION MODELS WITH MLFLOW AND GRID SEARCH
-import mlflow
-import mlflow.spark
-from pyspark.ml.regression import RandomForestRegressor, LinearRegression, GBTRegressor
+from pyspark.ml.regression import LinearRegression, RandomForestRegressor, GBTRegressor
 from pyspark.ml.evaluation import RegressionEvaluator
 from pyspark.ml.tuning import ParamGridBuilder
 
+import mlflow
+import mlflow.spark
+
 
 def train_and_validate():
-    # Initialization of Spark
+
     spark = SparkSession.builder \
         .master("local[*]") \
         .appName('test') \
@@ -36,20 +30,17 @@ def train_and_validate():
         .config("spark.driver.maxResultSize", "2g") \
         .getOrCreate()
 
-    # Load the delta table from the Exploitation Zone
+    # load the delta table from the Exploitation Zone
     cwd = os.getcwd()
     exploitation_zone = os.path.join(cwd, 'Exploitation Zone')
 
     original_data = spark.read.format('parquet').load(f"{exploitation_zone}/delta-table")
 
-
-    original_data.show(10)
-
     # SELECTION OF THE MOST CORRELATED FEATURES
 
     data = original_data
 
-    # Define feature columns
+    # define feature columns
     feature_columns = [
         "year", "bathrooms", "rooms", "size", "latitude", "longitude", "average_income",
         "exterior", "hasLift", "penthouse", "duplex", "studio", "chalet", "flat", "renew",
@@ -64,7 +55,7 @@ def train_and_validate():
     assembler = VectorAssembler(inputCols=feature_columns, outputCol="features")
     data = assembler.transform(data)
 
-    # We look for the features that have a higher correlation with the price
+    # we look for the features that have a higher correlation with the price
     correlation_matrix = Correlation.corr(data, "features").head()[0]
 
     correlation_values = correlation_matrix.toArray()[:, -1]  # Last column corresponds to 'price'
@@ -73,7 +64,7 @@ def train_and_validate():
 
     print(sorted_features)
 
-    # Select features with correlation greater than a determinated threshold
+    # select features with correlation greater than a determinated threshold
     threshold = 0.1
     selected_features = [feature for feature, correlation in sorted_features if abs(correlation) > threshold and feature != "price"]
 
@@ -86,10 +77,10 @@ def train_and_validate():
 
     train_data, val_data = data_selected_features.randomSplit([0.8, 0.2], seed=42)
 
-    # Evaluator for RMSE
+    # evaluator for RMSE
     evaluator = RegressionEvaluator(labelCol="price", predictionCol="prediction", metricName="rmse")
 
-    # Initialize MLflow experiment
+    # initialize MLflow experiment
     mlflow.set_experiment("Reg. Models - Price Prediction")
 
     # RANDOM FOREST REGRESSOR
@@ -103,38 +94,31 @@ def train_and_validate():
     best_rf_model = None
     best_rf_rmse = float("inf")
 
-    # Train Random Forest with multiple hyperparameters
+    # train Random Forest with multiple hyperparameters
     for params in rf_paramGrid:
         param_values = {param.name: value for param, value in params.items()}
         run_name = f"RF_numTrees_{param_values['numTrees']}_maxDepth_{param_values['maxDepth']}_maxBins_{param_values['maxBins']}"
 
         with mlflow.start_run(run_name=run_name, nested=True):
-            # Log parameters
+            
             mlflow.log_params(param_values)
-
-            # Train the model
             rf.setParams(**{param.name: value for param, value in params.items()})
+            
             model = rf.fit(train_data)
-
-            # Validate the model
             predictions = model.transform(val_data)
             rmse = evaluator.evaluate(predictions)
-
-            # Log metrics
             mlflow.log_metric("rmse", rmse)
-
-            # Log the trained model
             mlflow.spark.log_model(model, "random_forest_model")
 
             print(f"Random Forest - Params: {param_values}, RMSE: {rmse}")
 
-            # Update best model if applicable
+            # update best model if applicable
             if rmse < best_rf_rmse:
                 best_rf_rmse = rmse
                 best_rf_model = model
                 best_rf_params = param_values
 
-    # Log the best Random Forest model
+    # log the best Random Forest model
     if best_rf_model:
         with mlflow.start_run(run_name="Best_RF_Model", nested=True):
             mlflow.log_params(best_rf_params)
@@ -152,38 +136,31 @@ def train_and_validate():
     best_lr_model = None
     best_lr_rmse = float("inf")
 
-    # Train Linear Regression with multiple hyperparameters
+    # train Linear Regression with multiple hyperparameters
     for params in lr_paramGrid:
         param_values = {param.name: value for param, value in params.items()}
         run_name = f"LR_regParam_{param_values['regParam']}_elasticNet_{param_values['elasticNetParam']}"
 
         with mlflow.start_run(run_name=run_name, nested=True):
-            # Log parameters
+            
             mlflow.log_params(param_values)
-
-            # Train the model
             lr.setParams(**{param.name: value for param, value in params.items()})
+            
             model = lr.fit(train_data)
-
-            # Validate the model
             predictions = model.transform(val_data)
             rmse = evaluator.evaluate(predictions)
-
-            # Log metrics
             mlflow.log_metric("rmse", rmse)
-
-            # Log the trained model
             mlflow.spark.log_model(model, "linear_regression_model")
 
             print(f"Linear Regression - Params: {param_values}, RMSE: {rmse}")
 
-            # Update best model if applicable
+            # update best model if applicable
             if rmse < best_lr_rmse:
                 best_lr_rmse = rmse
                 best_lr_model = model
                 best_lr_params = param_values
 
-    # Log the best Linear Regression model
+    # log the best Linear Regression model
     if best_lr_model:
         with mlflow.start_run(run_name="Best_LR_Model", nested=True):
             mlflow.log_params(best_lr_params)
@@ -203,38 +180,31 @@ def train_and_validate():
     best_gbt_model = None
     best_gbt_rmse = float("inf")
 
-    # Train GBT with multiple hyperparameters
+    # train GBT with multiple hyperparameters
     for params in gbt_paramGrid:
         param_values = {param.name: value for param, value in params.items()}
         run_name = f"GBT_maxDepth_{param_values['maxDepth']}_maxBins_{param_values['maxBins']}"
 
         with mlflow.start_run(run_name=run_name, nested=True):
-            # Log parameters
             mlflow.log_params(param_values)
-
-            # Train the model
             gbt.setParams(**{param.name: value for param, value in params.items()})
+            
             model = gbt.fit(train_data)
-
-            # Validate the model
             predictions = model.transform(val_data)
             rmse = evaluator.evaluate(predictions)
-
-            # Log metrics
             mlflow.log_metric("rmse", rmse)
 
-            # Log the trained model
             mlflow.spark.log_model(model, "gbt_model")
 
             print(f"GBT Model - Params: {param_values}, RMSE: {rmse}")
 
-            # Update best model if applicable
+            # update best model if applicable
             if rmse < best_gbt_rmse:
                 best_gbt_rmse = rmse
                 best_gbt_model = model
                 best_gbt_params = param_values
 
-    # Log the best GBT model
+    # log the best GBT model
     if best_gbt_model:
         with mlflow.start_run(run_name="Best_GBT_Model", nested=True):
             mlflow.log_params(best_gbt_params)
