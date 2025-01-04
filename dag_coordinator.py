@@ -1,9 +1,16 @@
 from airflow import DAG
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator 
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from airflow.sensors.external_task import ExternalTaskSensor
 from A2 import *
 from A3 import *
+from time import sleep
+
+
+def wait_for_dags():
+    print("Waiting for the data collection DAGs to finish...")
+    sleep(10*60)
+
 
 with DAG(
     'dag_coordinador',
@@ -28,34 +35,13 @@ with DAG(
         task_id='trigger_dag_idealista',
         trigger_dag_id='dag_idealista',
     )
-    
-    # Sensores para asegurarse de que los DAGs disparados se hayan completado
-    wait_for_dag_income = ExternalTaskSensor(
-        task_id='wait_for_dag_income',
-        external_dag_id='dag_income',  # Nombre del DAG que se espera
-        external_task_id='transform_income',  # Espera que cualquier tarea de ese DAG termine
-        mode='poke',  # Se puede cambiar a 'reschedule' si prefieres otra estrategia
-        timeout=600,  # Tiempo máximo de espera en segundos
-        poke_interval=10  # Intervalo para comprobar si la tarea se ha completado
-    )
 
-    wait_for_dag_housing= ExternalTaskSensor(
-        task_id='wait_for_dag_housing',
-        external_dag_id='dag_housing',
-        external_task_id='transform_housing',
-        mode='poke',
-        timeout=600,
-        poke_interval=10
+    wait_for_dags = PythonOperator(
+        task_id='wait_for_dags',
+        python_callable=wait_for_dags
     )
     
-    wait_for_dag_idealista = ExternalTaskSensor(
-        task_id='wait_for_dag_idealista',
-        external_dag_id='dag_idealista',
-        external_task_id='transform_idealista',
-        mode='poke',
-        timeout=600,
-        poke_interval=10
-    )
+    
     
     # Tarea final que depende de las otras
     trigger_dag_modeling = TriggerDagRunOperator(
@@ -63,11 +49,6 @@ with DAG(
         trigger_dag_id='dag_modeling',
     )
     
-    # Establecer las dependencias
-    # Primero disparar los otros DAGs
-    trigger_dag_housing >> wait_for_dag_housing
-    trigger_dag_income >> wait_for_dag_income
-    trigger_dag_idealista >> wait_for_dag_idealista
     
     # Una vez que los otros DAGs hayan finalizado, dispara el DAG de modelado
-    [wait_for_dag_income, wait_for_dag_housing, wait_for_dag_idealista] >> trigger_dag_modeling
+    [trigger_dag_housing, trigger_dag_idealista, trigger_dag_income] >> wait_for_dags >> trigger_dag_modeling
