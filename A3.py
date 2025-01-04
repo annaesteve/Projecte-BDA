@@ -4,12 +4,14 @@ import json
 import pyspark
 import shutil
 import datetime
+import pymongo
+import re
 from datetime import datetime
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import explode, col, lit, when, lower
 import pandas as pd
-import pymongo
+from pyspark.sql.types import StructType
+from pyspark.sql.functions import lower, regexp_replace, concat, col, explode, lit, when
 
 
 def basic_transform_idealista(df):
@@ -122,7 +124,6 @@ def basic_transform_idealista(df):
     return df
 
 
-from pyspark.sql.types import StructType
 
 def get_paths():
     if not os.path.exists("Formatted Zone"):
@@ -187,8 +188,6 @@ def format_idealista(spark, landing_zone_path, formatted_zone_path):
     else:
         print("No JSON files found.")
 
-import re
-from pyspark.sql.functions import lower, regexp_replace, concat, col
 
 
 def extract_year(filename):
@@ -253,7 +252,6 @@ def format_housing(spark, landing_zone_path, formatted_zone_path):
 
 
 
-from pyspark.sql.functions import concat
 
 def format_income(spark, landing_zone_path, formatted_zone_path):
 
