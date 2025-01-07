@@ -23,11 +23,7 @@ def delta_spark_initialization():
 
     return spark
 
-
-
 def transform_clean_idealista(spark):
-    # Transformations and cleaning of idealista
-
     cwd = os.getcwd()
     exploitation_zone_clean = os.path.join(cwd, 'Exploitation Zone/clean')
 
@@ -43,7 +39,6 @@ def transform_clean_idealista(spark):
 
     # drop rows where operation is not sale
     idealista_df = idealista_df.filter(col('operation') == 'sale')
-
 
     # select the columns that we want to keep
     idealista_df = idealista_df.select(
@@ -76,10 +71,7 @@ def transform_clean_idealista(spark):
 
     return idealista_df
 
-
 def transform_clean_income(spark):
-    # Transformations and cleaning of income
-
     cwd = os.getcwd()
     exploitation_zone_clean = os.path.join(cwd, 'Exploitation Zone/clean')
 
@@ -110,15 +102,12 @@ def transform_clean_income(spark):
     income_df = income_df.drop('district_code', 'neighborhood_code', 'Seccio_Censal')
 
     income_df.show()
-
-    # print number of rows
     print(f"In the end, there are {income_df.count()} rows.")
 
     income_file_path = os.path.join(exploitation_zone_clean, 'income_df.parquet')
     income_df.write.parquet(income_file_path, mode="overwrite")
 
     return income_df
-
 
 def transform_clean_housing(spark):
     # Transformations and cleaning of housing
@@ -136,6 +125,7 @@ def transform_clean_housing(spark):
     print(f"At the beginning, there are {combined_housing_df.count()} rows.")
 
     housing_df = combined_housing_df.select('_id','neighborhood','Preu_m2_mitja', 'year')
+    
     # rename column
     housing_df = housing_df.withColumnRenamed('Preu_m2_mitja', 'average_price_per_m2')
 
@@ -146,10 +136,7 @@ def transform_clean_housing(spark):
 
     return housing_df
 
-
 def final_dataset():
-    # Prepare final dataset (joins)
-    
     builder = pyspark.sql.SparkSession.builder.appName("MyApp") \
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
