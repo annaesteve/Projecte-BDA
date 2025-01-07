@@ -4,15 +4,24 @@ from airflow.operators.bash import BashOperator
 from datetime import datetime
 import os
 
-
 from A4 import final_dataset
 from B1_B2 import train_and_validate
+from metadata import user_email
 
-#python_path = os.getenv("PYSPARK_PYTHON", "python3")
+default_args = {
+    'owner': 'airflow',
+    'retries': 3,
+    'retry_delay': timedelta(seconds=10),
+    'email_on_failure': True,
+    'email_on_retry': True,
+    'email': user_email,
+    'on_failure_callback': task_failure_alert,
+    'on_success_callback': task_success_alert
+}
 
 with DAG(
     dag_id='dag_modeling',
-    default_args={'retries': 3},
+    default_args=default_args,
     start_date=datetime(2023, 1, 1),
     schedule='@daily',
     catchup=False,
@@ -31,5 +40,4 @@ with DAG(
         provide_context=True
     )
 
-    # Definir el flujo del DAG
     task_join_datasets >> task_train_model
