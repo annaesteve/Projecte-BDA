@@ -5,6 +5,8 @@ from datetime import datetime
 from A2 import *
 from A3 import *
 from A4 import *
+from metadata import user_email
+
 
 spark_conf = (
     SparkSession.builder
