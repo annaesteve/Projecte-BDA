@@ -17,6 +17,7 @@ spark_conf = (
 )
 spark = configure_spark_with_delta_pip(spark_conf).getOrCreate()
 
+
 def collect_income_with_param(**kwargs):
     ti = kwargs['ti']
     landing_zone_dir = ti.xcom_pull(task_ids='landing_zone')
