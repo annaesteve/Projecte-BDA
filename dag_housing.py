@@ -16,6 +16,7 @@ spark_conf = (
 )
 spark = configure_spark_with_delta_pip(spark_conf).getOrCreate()
 
+
 def collect_housing_with_param(**kwargs):
     
     ti = kwargs['ti']
@@ -55,36 +56,32 @@ with DAG(
     description="Pipeline to collect and format housing data"
 ) as dag:
 
-    # Tarea de landing zone
     task_landing_zone = PythonOperator(
         task_id='landing_zone',
         python_callable=landing_zone
     )
-    # Recolectar datos de housing
+
     task_collect_housing = PythonOperator(
         task_id='collect_housing',
         python_callable=collect_housing_with_param,
         provide_context=True
     )
 
-    # Obtención de paths
     task_get_paths = PythonOperator(
         task_id='get_paths',
         python_callable=get_paths
     )
-    # Formatear datos de housing
+
     task_format_housing = PythonOperator(
         task_id='format_housing',
         python_callable=format_housing_with_params,
         provide_context=True
     )
 
-    # Transformar datos de Housing
     task_transform_housing = PythonOperator(
         task_id='transform_housing',
         python_callable=transform_housing_with_params,
         provide_context=True
     )
 
-    # Definir el flujo del DAG
     task_landing_zone >> task_collect_housing >> task_get_paths >> task_format_housing >> task_transform_housing
