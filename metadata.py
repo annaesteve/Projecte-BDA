@@ -2,6 +2,11 @@ import json
 import os
 import shutil
 
+# ---- COMPLETE THE INFORMATION BELOW -------
+user_email = 'example_email@gmail.com'
+
+# -------------------------------------------
+
 # Metadata file path
 metadata_file = "metadata.json"
 
