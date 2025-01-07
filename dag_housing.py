@@ -42,9 +42,7 @@ default_args = {
     'retry_delay': timedelta(seconds=10),
     'email_on_failure': True,
     'email_on_retry': True,
-    'email': user_email,
-    'on_failure_callback': task_failure_alert,
-    'on_success_callback': task_success_alert
+    'email': user_email
 }
 
 with DAG(
