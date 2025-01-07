@@ -123,8 +123,6 @@ def basic_transform_idealista(df):
 
     return df
 
-
-
 def get_paths():
     if not os.path.exists("Formatted Zone"):
         os.makedirs("Formatted Zone")
@@ -146,7 +144,6 @@ def format_idealista(spark, landing_zone_path, formatted_zone_path):
                 file_path = f"{landing_zone_path}/{year}_{month:02d}_{day:02d}_idealista.json"  # adjust path according to structure
                 if os.path.exists(file_path):
                     json_files_with_year.append((file_path, year))  # add the file and the associated year
-
 
     if json_files_with_year:
         # Read all schemas and unify
@@ -187,8 +184,6 @@ def format_idealista(spark, landing_zone_path, formatted_zone_path):
 
     else:
         print("No JSON files found.")
-
-
 
 def extract_year(filename):
     match = re.search(r'\d{4}', filename)  #search a year in YYYY format
@@ -242,16 +237,11 @@ def format_housing(spark, landing_zone_path, formatted_zone_path):
 
     housing_combined = housing_combined.dropDuplicates(["_id"])
 
-
-    # Show result
     housing_combined.show()
 
     housing_combined.write.mode("overwrite").json(f"{formatted_zone_path}/housing_combined")
 
     upload_to_mongo(housing_combined, "Formatted_Zone", "housing", "housing_combined")
-
-
-
 
 def format_income(spark, landing_zone_path, formatted_zone_path):
 
@@ -277,7 +267,6 @@ def format_income(spark, landing_zone_path, formatted_zone_path):
     print(f"There are {income_combined.count()} rows.")
 
     upload_to_mongo(income_combined, "Formatted_Zone", "income", "income_combined")
-
 
 def upload_to_mongo(df, database_name, collection_name, df_name):
     
