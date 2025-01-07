@@ -2,9 +2,8 @@ from airflow import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from A2 import *
-from A3 import *
 from time import sleep
+from metadata import user_email
 
 
 def wait_for_dags():
