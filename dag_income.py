@@ -42,6 +42,16 @@ def transform_income_with_params(**kwargs):
     
     transform_clean_income(spark)
 
+default_args = {
+    'owner': 'airflow',
+    'retries': 3,
+    'retry_delay': timedelta(seconds=10),
+    'email_on_failure': True,
+    'email_on_retry': True,
+    'email': user_email,
+    'on_failure_callback': task_failure_alert,
+    'on_success_callback': task_success_alert
+}
 
 with DAG(
     dag_id='dag_income',
